@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "generative-ocr"
+version = "0.1.0"
+description = ""
+authors = ["Dominique Luna <dluna132@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "^1.13.3"
+fire = "^0.5.0"
+pillow = "^10.2.0"
+google-cloud-aiplatform = "^1.43.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
