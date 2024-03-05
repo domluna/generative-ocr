@@ -9,12 +9,14 @@ import time
 import base64
 from vertexai.preview.generative_models import GenerativeModel, Part
 
+
 def load_api_key():
     with open(".env") as f:
         for line in f:
             if line.startswith("OPENAI_API_KEY"):
                 return line.split("=")[1].strip()
     return None
+
 
 SYSTEM_MESSAGE = """You are given an image and a series of question(s). Answer as succinctly as possible. Do not explain your reasoning for the answer, or add any additional wording, just give the answer.
 
@@ -80,7 +82,6 @@ def ocr_openai(
     buf.close()
 
     api_key = load_api_key()
-    print("API KEY: ", api_key)
     client = openai.OpenAI(api_key=api_key)
     t0 = time.time()
     completion = client.chat.completions.create(
@@ -162,7 +163,7 @@ def ocr_google(
 
     print(f"TOTAL COST: {total_cost:.5f}")
     print(
-        f"Estimated cost based for image tokens on vision pricing calculator from https://cloud.google.com/vertex-ai/pricing."
+        "Estimated cost based for image tokens on vision pricing calculator from https://cloud.google.com/vertex-ai/pricing."
     )
     print(responses)
 

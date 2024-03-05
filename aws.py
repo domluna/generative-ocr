@@ -2,8 +2,9 @@ from textractor import Textractor
 from textractor.data.constants import TextractFeatures
 from PIL import Image
 import time
+import fire
 
-queries = [
+vaccination_queries = [
     # specifying the label works but, otherwise it seems it takes first name is taken as the first name it encounters rather than the label.
     "What is the label first name value",
     "What is the label last name value",
@@ -20,12 +21,36 @@ queries = [
     "MI",
 ]
 
+truckticket_queries = [
+    "What is the net payload?",
+    "What is the net payload unit?",
+    "What is the gross payload?",
+    "What is the ticket number?",
+    "What is the license plate?",
+    "What is the truck identifier?",
+    "What is the material being delivered?",
+    "How many loads were delivered so far?",
+]
 
-if __name__ == "__main__":
+
+def extract(type="vaccination"):
+    if type == "vaccination":
+        img = Image.open("./aws/vaccination.jpg")
+        queries = vaccination_queries
+    elif type == "truckticket":
+        # fails apparently the questions are not valid!
+        img = Image.open("./trucktickets/1.webp")
+        queries = truckticket_queries
+    else:
+        raise ValueError(f"Invalid test: {type}")
+
+    print(f"Extracting {type} data")
+    print(img.size)
+
     extractor = Textractor(profile_name="default")
     t0 = time.time()
     document = extractor.analyze_document(
-        file_source=Image.open("./aws/vaccination.jpg"),
+        file_source=img,
         features=[TextractFeatures.QUERIES],
         queries=queries,
     )
@@ -39,3 +64,7 @@ if __name__ == "__main__":
             )
         else:
             print(f"{query.query}\n\tNo Answer\n")
+
+
+if __name__ == "__main__":
+    fire.Fire(extract)
